@@ -52,6 +52,7 @@ Route::put('/card', function (Request $request) {
     $card = Card::findOrFail($request->get('id'));
     $card->title = $request->get('title');
     $card->description = $request->get('description');
+    $card->order = 0;
     $card->save();
     return $card;
 });
