@@ -61,7 +61,7 @@ Route::post('/card', function (Request $request) {
         'title' => $request->get('title'),
         'description' => $request->get('description'),
         'column_id' => $request->get('column'),
-        'order' => 0;
+        'order' => 0,
     ]);
 });
 
