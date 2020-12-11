@@ -29,12 +29,13 @@ Route::get('/columns', function (Request $request) {
 
 Route::put('/columns', function (Request $request) {
     foreach ($request->all() as $column) {
-        foreach ($column['cards'] as $card) {
+        foreach ($column['cards'] as $index => $card) {
+            $cardModel = Card::findOrFail($card['id']);
             if ($card['column_id'] != $column['id']) {
-                $card = Card::findOrFail($card['id']);
-                $card->column_id = $column['id'];
-                $card->save();
+                $cardModel->column_id = $column['id'];
             }
+            $cardModel->order = $index;
+            $cardModel->save();
         }
     }
 
@@ -44,7 +45,7 @@ Route::put('/columns', function (Request $request) {
 Route::post('/columns', function (Request $request) {
     return Column::create([
         'name' => $request->get('name')
-    ]);
+    ])->load('cards');
 });
 
 Route::put('/card', function (Request $request) {

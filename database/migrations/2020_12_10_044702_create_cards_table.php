@@ -20,6 +20,7 @@ class CreateCardsTable extends Migration
             $table->foreignId('column_id')
                 ->constrained()
                 ->onDelete('cascade');
+            $table->integer('order');
             $table->timestamps();
         });
     }
