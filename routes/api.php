@@ -52,7 +52,6 @@ Route::put('/card', function (Request $request) {
     $card = Card::findOrFail($request->get('id'));
     $card->title = $request->get('title');
     $card->description = $request->get('description');
-    $card->order = 0;
     $card->save();
     return $card;
 });
@@ -61,7 +60,8 @@ Route::post('/card', function (Request $request) {
     return Card::create([
         'title' => $request->get('title'),
         'description' => $request->get('description'),
-        'column_id' => $request->get('column')
+        'column_id' => $request->get('column'),
+        'order' => 0;
     ]);
 });
 
