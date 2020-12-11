@@ -17,7 +17,9 @@ class CreateCardsTable extends Migration
             $table->id();
             $table->string('title');
             $table->text('description');
-            $table->integer('column_id');
+            $table->foreignId('column_id')
+                ->constrained()
+                ->onDelete('cascade');
             $table->timestamps();
         });
     }

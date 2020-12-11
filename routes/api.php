@@ -55,3 +55,7 @@ Route::post('/card', function (Request $request) {
         'column_id' => $request->get('column')
     ]);
 });
+
+Route::delete('/column/{column}', function (Column $column) {
+    return $column->delete();
+});
