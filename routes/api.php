@@ -5,6 +5,7 @@ use App\Column;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
+use Spatie\DbDumper\Databases\MySql;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,7 +27,7 @@ Route::get('/columns', function (Request $request) {
     return Column::with('cards')->get();
 });
 
-Route::post('/columns', function (Request $request) {
+Route::put('/columns', function (Request $request) {
     foreach ($request->all() as $column) {
         foreach ($column['cards'] as $card) {
             if ($card['column_id'] != $column['id']) {
@@ -38,6 +39,12 @@ Route::post('/columns', function (Request $request) {
     }
 
     return Column::with('cards')->get();
+});
+
+Route::post('/columns', function (Request $request) {
+    return Column::create([
+        'name' => $request->get('name')
+    ]);
 });
 
 Route::put('/card', function (Request $request) {
@@ -58,4 +65,14 @@ Route::post('/card', function (Request $request) {
 
 Route::delete('/column/{column}', function (Column $column) {
     return $column->delete();
+});
+
+Route::get('/export', function (Request $request) {
+    MySql::create()
+        ->setDbName(config('database.connections.mysql.database'))
+        ->setUserName(config('database.connections.mysql.username'))
+        ->setPassword(config('database.connections.mysql.password'))
+        ->dumpToFile(storage_path('app/dump.sql'));
+
+    return response()->download(storage_path('app/dump.sql'));
 });
